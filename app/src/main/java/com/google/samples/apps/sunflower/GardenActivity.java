@@ -31,6 +31,9 @@ public class GardenActivity extends AppCompatActivity {
         // DataBinding初始化
         ActivityGardenBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_garden);
 
+       /* ActivityGardenBinding binding = ActivityGardenBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());*/
+
         this.drawerLayout = binding.drawerLayout; // 拿到布局的drawer_layout 赋值 给成员drawerLayout
 
         // 拿到布局的garden_nav_fragment(首页布局Fragment画面区域) 赋值 给成员navController

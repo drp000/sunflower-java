@@ -23,6 +23,7 @@ public class PlantAndGardenPlantingsViewModel extends ViewModel {
     // ObservableField 感应数据变化   ---->  LiveData 感应数据变化
     // private LiveData
 
+    public ObservableField<String> plantId; //植物ID，用于跳转使用
     public ObservableField<String> waterDateString; // 浇水时间 浇水日 信息数据成员
     public ObservableInt wateringInterval;
     public ObservableField<String> imageUrl; // 图片的URL
@@ -34,6 +35,7 @@ public class PlantAndGardenPlantingsViewModel extends ViewModel {
         final GardenPlanting gardenPlanting = plantings.getGardenPlantings().get(0);
         final DateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.US);
 
+        this.plantId = new ObservableField<>(plantings.getPlant().getPlantId());
         this.waterDateString = new ObservableField<>(dateFormat.format(gardenPlanting.getLastWateringDate().getTime()));
         this.wateringInterval = new ObservableInt(plant.getWateringInterval());
         this.imageUrl = new ObservableField<>(plant.getImageUrl()); // 给它值

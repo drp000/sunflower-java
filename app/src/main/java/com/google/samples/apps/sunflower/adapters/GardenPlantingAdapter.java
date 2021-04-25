@@ -1,7 +1,6 @@
 package com.google.samples.apps.sunflower.adapters;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +27,12 @@ public class GardenPlantingAdapter extends ListAdapter<PlantAndGardenPlantings, 
     @NonNull
     @Override
     public GardenPlantingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(DataBindingUtil.inflate(
+        /*return new ViewHolder(DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.list_item_garden_planting, parent, false));
+                R.layout.list_item_garden_planting, parent, false));*/
+
+        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_garden_planting, parent, false);
+        return new ViewHolder(inflate);
     }
 
     @Override
@@ -38,10 +40,11 @@ public class GardenPlantingAdapter extends ListAdapter<PlantAndGardenPlantings, 
         PlantAndGardenPlantings plantings = getItem(position);
         holder.itemView.setTag(plantings);
 
-        holder.bind(createOnClickListener(plantings.getPlant().getPlantId()), plantings);
+//        holder.bind(createOnClickListener(plantings.getPlant().getPlantId()), plantings);
+        holder.bind(new Listener(), plantings);
     }
 
-    private View.OnClickListener createOnClickListener(String plantId) {
+    private Listener createOnClickListener(String plantId) {
         /*return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +53,7 @@ public class GardenPlantingAdapter extends ListAdapter<PlantAndGardenPlantings, 
         };*/
 
         // 跳转到详情 并且把植物 id 给详情
-        return new View.OnClickListener() {
+        /*return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 导航过去了 到 详情
@@ -58,7 +61,8 @@ public class GardenPlantingAdapter extends ListAdapter<PlantAndGardenPlantings, 
                         GardenFragmentDirections.actionGardenFragmentToPlantDetailFragment(plantId)
                 );
             }
-        };
+        };*/
+        return new Listener();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -69,10 +73,26 @@ public class GardenPlantingAdapter extends ListAdapter<PlantAndGardenPlantings, 
             this.binding = binding;
         }
 
-        void bind(View.OnClickListener listener, PlantAndGardenPlantings plantings) {
-            this.binding.setViewModel(new PlantAndGardenPlantingsViewModel(plantings)); // TODO 这句话是上节课没有的(显示OK)
-            this.binding.setClick(listener);  // 直接和 布局里面的 click 绑定了 关联起来
+        public ViewHolder(@NonNull View view) {
+            super(view);
+            this.binding = DataBindingUtil.bind(view);
+        }
+
+        void bind(Listener listener, PlantAndGardenPlantings plantings) {
+            this.binding.setViewModel(new PlantAndGardenPlantingsViewModel(plantings));
+            this.binding.setListener(listener);  // 直接和 布局里面的 click 绑定了 关联起来
             this.binding.executePendingBindings();
+        }
+    }
+
+    /**
+     * Item的点击事件，使用dataBinding进行双向绑定
+     */
+    public static class Listener {
+        public void onViewClicked(View view, String plantId) {
+            Navigation.findNavController(view).navigate(
+                    GardenFragmentDirections.actionGardenFragmentToPlantDetailFragment(plantId)
+            );
         }
     }
 

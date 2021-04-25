@@ -7,10 +7,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.samples.apps.sunflower.R;
 import com.google.samples.apps.sunflower.adapters.GardenPlantingAdapter;
 import com.google.samples.apps.sunflower.data.PlantAndGardenPlantings;
 import com.google.samples.apps.sunflower.databinding.FragmentGardenBinding;
@@ -30,7 +32,8 @@ public class GardenFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         // 使用 DataBinding的布局文件
-        FragmentGardenBinding binding = FragmentGardenBinding.inflate(inflater, container, false);
+//        FragmentGardenBinding binding = FragmentGardenBinding.inflate(inflater, container, false);
+        FragmentGardenBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_garden, container, false);
 
         // 创建适配器 用于展示（我的花园）列表数据
         GardenPlantingAdapter adapter = new GardenPlantingAdapter();
@@ -52,7 +55,7 @@ public class GardenFragment extends Fragment {
      * @param binding 上面丢下来的 布局==DataBinding
      */
     private void subScribeUi(@NonNull GardenPlantingAdapter adapter, @NonNull FragmentGardenBinding binding) {
-
+        binding.setHasPlantings(false);
         // 数据暴漏层，仓库
         // VM工厂
         // VM

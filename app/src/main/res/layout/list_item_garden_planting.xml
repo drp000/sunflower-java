@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-   RecyclerView 的 item 布局文件
-   所有的布局文件 都要交给 DataBinding进行管理
-
-   ViewModel是怎么初始化
-
- -->
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -14,20 +6,20 @@
 
         <!-- 用户点击 图片与文本 所触发的事件 -->
         <variable
-            name="click"
-            type="android.view.View.OnClickListener"/>
+            name="listener"
+            type="com.google.samples.apps.sunflower.adapters.GardenPlantingAdapter.Listener" />
 
         <!-- 图片与文本 信息显示的ViewModel -->
         <variable
             name="viewModel"
-            type="com.google.samples.apps.sunflower.viewmodels.PlantAndGardenPlantingsViewModel"/>
+            type="com.google.samples.apps.sunflower.viewmodels.PlantAndGardenPlantingsViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{click}">
+        android:onClick="@{(view)->listener.onViewClicked(view, viewModel.plantId)}">
 
         <!-- item 的图片显示 -->
         <ImageView
@@ -44,35 +36,36 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            />
+            app:layout_constraintVertical_bias="0.0" />
 
         <!-- item 的图片显示 下面的基本信息 -->
         <TextView
             android:id="@+id/plant_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_small"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_small"
             android:text="@{@string/planted_date(viewModel.plantName, viewModel.plantDateString)}"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView"/>
+            app:layout_constraintTop_toBottomOf="@id/imageView" />
 
         <!-- item 的图片显示 下面的 （上次浇水 xxxxxxxx） -->
         <TextView
             android:id="@+id/water_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_small"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_normal"
             android:text="@{@string/water_date(@string/watering_next_prefix(viewModel.waterDateString), @plurals/watering_next_suffix(viewModel.wateringInterval, viewModel.wateringInterval))}"
+            android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/plant_date"/>
+            app:layout_constraintTop_toBottomOf="@id/plant_date" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
